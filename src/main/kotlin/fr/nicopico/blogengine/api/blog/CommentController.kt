@@ -11,7 +11,7 @@ import fr.nicopico.blogengine.domain.request.blog.comment.create.CreateCommentRe
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/blog/posts")
 class CommentController(
     private val dispatcher: Dispatcher,
     private val commentQueries: CommentQueries,

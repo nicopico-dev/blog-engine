@@ -11,7 +11,7 @@ import fr.nicopico.blogengine.domain.request.blog.author.create.CreateAuthorRequ
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/author")
+@RequestMapping("/blog/authors")
 class AuthorController(
     private val dispatcher: Dispatcher,
     private val authorQueries: AuthorQueries

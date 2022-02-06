@@ -12,7 +12,7 @@ import fr.nicopico.blogengine.domain.request.blog.post.delete.DeletePostRequestH
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/blog/posts")
 class PostController(
     private val dispatcher: Dispatcher,
     private val postQueries: PostQueries,
