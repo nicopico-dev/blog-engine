@@ -8,6 +8,7 @@ import fr.nicopico.blogengine.domain.repository.AuthorRepository
 import fr.nicopico.blogengine.domain.repository.CommentRepository
 import fr.nicopico.blogengine.domain.repository.PostRepository
 import fr.nicopico.blogengine.domain.request.RequestHandler
+import fr.nicopico.blogengine.infra.logInfo
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
 import java.time.Instant
@@ -37,7 +38,9 @@ class CreateCommentRequestHandler(
             )
         )
 
-        return commentRepository.save(comment)
+        return commentRepository.save(comment).also {
+            logInfo { "Created comment $it" }
+        }
     }
 
     private fun getOrCreateAuthor(authorEmail: Email): Author {

@@ -3,6 +3,7 @@ package fr.nicopico.blogengine.domain.request.blog.author.create
 import fr.nicopico.blogengine.domain.entities.Author
 import fr.nicopico.blogengine.domain.repository.AuthorRepository
 import fr.nicopico.blogengine.domain.request.RequestHandler
+import fr.nicopico.blogengine.infra.logInfo
 import org.springframework.stereotype.Component
 import javax.transaction.Transactional
 
@@ -17,6 +18,8 @@ class CreateAuthorRequestHandler(
             email = request.email
         )
 
-        return authorRepository.save(author)
+        return authorRepository.save(author).also {
+            logInfo { "Create Author $it" }
+        }
     }
 }

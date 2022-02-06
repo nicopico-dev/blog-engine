@@ -5,6 +5,9 @@ import fr.nicopico.blogengine.domain.entities.Post
 import fr.nicopico.blogengine.domain.repository.AuthorRepository
 import fr.nicopico.blogengine.domain.repository.PostRepository
 import fr.nicopico.blogengine.domain.request.RequestHandler
+import fr.nicopico.blogengine.infra.logDebug
+import fr.nicopico.blogengine.infra.logInfo
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.time.Instant
 import javax.transaction.Transactional
@@ -29,6 +32,8 @@ class CreatePostRequestHandler(
             ),
         )
 
-        return postRepository.save(post)
+        return postRepository.save(post).also {
+            logInfo { "Created Post $it" }
+        }
     }
 }
