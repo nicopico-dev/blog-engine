@@ -1,8 +1,14 @@
-spring.profiles.active: dev
-spring.jpa.open-in-view: true
-logging.level.root: "info"
+logging.level.root: info
+
+spring:
+  profiles:
+    default: dev
+    group:
+      h2dev: dev,h2
+  jpa:
+    open-in-view: true
 
 my.typesafe.properties:
-  text: "hello"
+  text: hello
   number: 42
   flag: true
