@@ -1,5 +1,6 @@
 package fr.nicopico.blogengine.domain.entities
 
+import java.util.UUID
 import javax.persistence.*
 
 @Entity
@@ -16,4 +17,5 @@ class Post(
     val comments : List<Comment> = emptyList(),
     @Embedded
     val contentMetadata: ContentMetadata,
+    val permalink: String = "test",
 )

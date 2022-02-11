@@ -60,7 +60,9 @@ liquibase {
                 "changeLogFile" to "src/main/resources/liquibase/master.yml",
                 "url" to "jdbc:mysql://localhost:3307/blog",
                 "username" to "root",
-                "password" to "password"
+                "password" to "password",
+                "referenceUrl" to "hibernate:spring:fr.nicopico.blogengine.domain.entities?dialect=org.hibernate.dialect.MySQL5InnoDBDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy",
+                "referenceDriver" to "liquibase.ext.hibernate.database.connection.HibernateDriver",
             )
         }
     }
