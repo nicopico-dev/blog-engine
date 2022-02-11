@@ -1,0 +1,175 @@
+databaseChangeLog:
+  - property:
+      name: IDENTITY
+      value: IDENTITY
+      dbms: h2
+  - property:
+      name: IDENTITY
+      value: bigint
+      dbms: mysql
+  - property:
+      name: NOW
+      value: now()
+      dbms: h2, mysql
+  - property:
+      name: UUID
+      value: varchar(36)
+      dbms: h2, mysql
+
+  - changeSet:
+      id: 1644613669654-1
+      author: nicopico (generated)
+      changes:
+        - createTable:
+            tableName: author
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: IDENTITY
+                  autoIncrement: true
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+  - changeSet:
+      id: 1644613669654-2
+      author: nicopico (generated)
+      changes:
+        - createTable:
+            tableName: comment
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: IDENTITY
+                  autoIncrement: true
+              - column:
+                  name: creation_date
+                  type: datetime
+              - column:
+                  name: modification_date
+                  type: datetime
+              - column:
+                  name: text
+                  type: VARCHAR(255)
+              - column:
+                  name: author_id
+                  type: BIGINT
+              - column:
+                  name: post_id
+                  type: BIGINT
+  - changeSet:
+      id: 1644613669654-4
+      author: nicopico (generated)
+      changes:
+        - createTable:
+            tableName: post
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: IDENTITY
+                  autoIncrement: true
+              - column:
+                  name: content
+                  type: VARCHAR(255)
+              - column:
+                  name: creation_date
+                  type: datetime
+              - column:
+                  name: modification_date
+                  type: datetime
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: author_id
+                  type: BIGINT
+  - changeSet:
+      id: 1644613669654-5
+      author: nicopico (generated)
+      changes:
+        - createIndex:
+            indexName: idx_comment_author
+            tableName: comment
+            columns:
+              - column:
+                  name: author_id
+  - changeSet:
+      id: 1644613669654-6
+      author: nicopico (generated)
+      changes:
+        - createIndex:
+            indexName: idx_post_author
+            tableName: post
+            columns:
+              - column:
+                  name: author_id
+  - changeSet:
+      id: 1644613669654-7
+      author: nicopico (generated)
+      changes:
+        - createIndex:
+            indexName: idx_comment_post
+            tableName: comment
+            columns:
+              - column:
+                  name: post_id
+  - changeSet:
+      id: 1644613669654-8
+      author: nicopico (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: comment
+            constraintName: fk_comment_author
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: author
+            validate: true
+  - changeSet:
+      id: 1644613669654-9
+      author: nicopico (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: post
+            constraintName: fk_post_author
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: author
+            validate: true
+  - changeSet:
+      id: 1644613669654-10
+      author: nicopico (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: post_id
+            baseTableName: comment
+            constraintName: fk_comment_post
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: RESTRICT
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: post
+            validate: true
+
+  - includeAll:
+      path: changelog
+      relativeToChangelogFile: true

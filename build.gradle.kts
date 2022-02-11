@@ -8,6 +8,8 @@ plugins {
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.spring") version kotlinVersion
     kotlin("plugin.jpa") version kotlinVersion
+
+    id("org.liquibase.gradle") version "2.1.1"
 }
 
 group = "fr.nicopico"
@@ -28,18 +30,40 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.h2database:h2")
     implementation("mysql:mysql-connector-java")
+    implementation("org.liquibase:liquibase-core")
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    liquibaseRuntime("org.liquibase:liquibase-core")
+    liquibaseRuntime("mysql:mysql-connector-java")
+    liquibaseRuntime("info.picocli:picocli:4.6.1")
+    liquibaseRuntime("org.liquibase.ext:liquibase-hibernate5:3.6")
+    liquibaseRuntime("org.yaml:snakeyaml:1.17")
+    liquibaseRuntime(sourceSets.main.map {it.output})
+}
+
+liquibase {
+    activities {
+        create("main") {
+            arguments = mapOf(
+                "logLevel" to "info",
+                "changeLogFile" to "src/main/resources/liquibase/master.yml",
+                "url" to "jdbc:mysql://localhost:3307/blog",
+                "username" to "root",
+                "password" to "password"
+            )
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {

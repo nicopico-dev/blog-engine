@@ -5,7 +5,7 @@ import javax.persistence.*
 @Entity
 class Comment(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     val text: String,
     @ManyToOne

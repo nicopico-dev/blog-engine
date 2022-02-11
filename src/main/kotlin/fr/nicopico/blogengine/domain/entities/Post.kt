@@ -5,7 +5,7 @@ import javax.persistence.*
 @Entity
 class Post(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
     val title: String,
     val content: String,

@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: dev-dataset-20220211
+      author: nicopico
+      context: dev
+      changes:
+        - sql: INSERT INTO author (id, name, email) VALUES (1, 'Nicolas PICON', 'picon.nicolas@gmail.com')
