@@ -1,10 +1,16 @@
 logging.level.root: info
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   profiles:
     default: dev
     group:
       h2dev: dev,h2
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   jpa:
     open-in-view: true
   liquibase:
