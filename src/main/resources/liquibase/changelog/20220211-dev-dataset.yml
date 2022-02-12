@@ -4,4 +4,4 @@ databaseChangeLog:
       author: nicopico
       context: dev
       changes:
-        - sql: INSERT INTO author (id, name, email) VALUES (1, 'Nicolas PICON', 'picon.nicolas@gmail.com')
+        - sql: INSERT INTO author (name, email) VALUES ('Nicolas PICON', 'picon.nicolas@gmail.com')

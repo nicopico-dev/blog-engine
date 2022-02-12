@@ -5,7 +5,7 @@ databaseChangeLog:
       dbms: h2
   - property:
       name: IDENTITY
-      value: bigint
+      value: BIGINT
       dbms: mysql
   - property:
       name: NOW
@@ -28,7 +28,7 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
                   name: id
-                  type: IDENTITY
+                  type: ${IDENTITY}
                   autoIncrement: true
               - column:
                   name: email
@@ -48,7 +48,7 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
                   name: id
-                  type: IDENTITY
+                  type: ${IDENTITY}
                   autoIncrement: true
               - column:
                   name: creation_date
@@ -77,7 +77,7 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
                   name: id
-                  type: IDENTITY
+                  type: ${IDENTITY}
                   autoIncrement: true
               - column:
                   name: content
@@ -85,6 +85,7 @@ databaseChangeLog:
               - column:
                   name: creation_date
                   type: datetime
+
               - column:
                   name: modification_date
                   type: datetime
