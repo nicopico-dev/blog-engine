@@ -3,6 +3,7 @@ logging:
     fr.nicopico: debug
     org.springframework.web: debug
     org.hibernate: warn
+    web: debug
 
 spring:
   datasource:
@@ -11,3 +12,5 @@ spring:
     password: password
   jpa:
     generate-ddl: true
+
+my.typesafe.properties.text: ${MY_TEXT} # Use MY_TEXT environment variable

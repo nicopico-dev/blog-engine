@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="BlogEngineApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="blog-engine.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="fr.nicopico.blogengine.BlogEngineApplication" />
+    <option name="ACTIVE_PROFILES" value="h2dev" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <envs>
+      <env name="MY_TEXT" value="bonjour" />
+      <env name="MY_TYPESAFE_PROPERTIES_TEXT" value="bye" />
+    </envs>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
