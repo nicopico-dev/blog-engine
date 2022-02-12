@@ -67,7 +67,9 @@ liquibase {
                 "username" to "root",
                 "password" to "password",
                 "referenceUrl" to "hibernate:spring:fr.nicopico.blogengine.domain.entities" +
-                        "?dialect=org.hibernate.dialect.MySQLDialect",
+                        "?dialect=org.hibernate.dialect.MySQLDialect" +
+                        "&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy" +
+                        "&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy",
                 "referenceDriver" to "liquibase.ext.hibernate.database.connection.HibernateDriver",
             )
         }

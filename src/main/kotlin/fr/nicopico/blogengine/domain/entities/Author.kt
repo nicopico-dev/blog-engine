@@ -6,7 +6,10 @@ import javax.persistence.*
 class Author(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     val id: Long? = null,
+    @Column(name = "name")
     val name: String? = null,
+    @Column(name = "email")
     val email: Email,
 )
