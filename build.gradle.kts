@@ -90,9 +90,12 @@ liquibase {
                 "referenceDriver" to "liquibase.ext.hibernate.database.connection.HibernateDriver",
             )
         }
-        // Running diff commands must set the activity to diffMain
-        // like `./gradlew diffChangeLog -PrunList=diffMain`
-        runList = project.ext.get("runList") ?: "main"
+    }
+    // Running diff commands must set the activity to diffMain
+    // like `./gradlew diffChangeLog -PrunList=diffMain`
+    this.runList = project.ext.let {
+        if (it.has("runList")) it["runList"]
+        else "main"
     }
 }
 
