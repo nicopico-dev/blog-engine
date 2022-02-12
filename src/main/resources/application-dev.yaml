@@ -4,13 +4,14 @@ logging:
     org.springframework.web: debug
     org.hibernate: warn
     web: debug
+    liquibase: debug
 
 spring:
   jpa:
     generate-ddl: false
   h2:
     console:
-      enabled: true
+      enabled: false
   liquibase:
     contexts: dev
 
