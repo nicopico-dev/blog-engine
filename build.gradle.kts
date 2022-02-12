@@ -1,4 +1,8 @@
+import org.gradle.initialization.BuildRequestMetaData
+import org.gradle.kotlin.dsl.support.serviceOf
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.util.Date
+import java.text.SimpleDateFormat
 
 plugins {
     val kotlinVersion = "1.6.10"
@@ -54,15 +58,28 @@ dependencies {
     liquibaseRuntime("org.liquibase.ext:liquibase-hibernate5:4.5.0")
     liquibaseRuntime("org.springframework:spring-beans:5.3.15")
     liquibaseRuntime("org.springframework.data:spring-data-jpa:2.6.1")
+    liquibaseRuntime("org.jetbrains.kotlin:kotlin-reflect")
     liquibaseRuntime(sourceSets.main.map {it.output})
 }
 
 liquibase {
     activities {
-        create("main") {
+        register("main") {
             arguments = mapOf(
-                "logLevel" to "debug",
+                "logLevel" to "info",
                 "changeLogFile" to "src/main/resources/liquibase/master.yml",
+                "url" to "jdbc:mysql://localhost:3307/blog",
+                "username" to "root",
+                "password" to "password",
+            )
+        }
+        register("diffMain") {
+            val startTime = Date(project.gradle.serviceOf<BuildRequestMetaData>().startTime)
+            val df = SimpleDateFormat("YYYYMMdd")
+
+            arguments = mapOf(
+                "logLevel" to "info",
+                "changeLogFile" to "src/main/resources/liquibase/changelog/${df.format(startTime)}-diff.yml",
                 "url" to "jdbc:mysql://localhost:3307/blog",
                 "username" to "root",
                 "password" to "password",
@@ -73,6 +90,9 @@ liquibase {
                 "referenceDriver" to "liquibase.ext.hibernate.database.connection.HibernateDriver",
             )
         }
+        // Running diff commands must set the activity to diffMain
+        // like `./gradlew diffChangeLog -PrunList=diffMain`
+        runList = project.ext.get("runList") ?: "main"
     }
 }
 

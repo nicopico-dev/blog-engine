@@ -19,6 +19,4 @@ class Post(
     val comments : List<Comment> = emptyList(),
     @Embedded
     val contentMetadata: ContentMetadata,
-    @Column(name = "permalink")
-    val permalink: String = "test",
 )
