@@ -5,9 +5,12 @@ import javax.persistence.*
 @Entity
 class Post(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     val id: Long? = null,
+    @Column(name = "title")
     val title: String,
+    @Column(name = "content")
     val content: String,
     @OneToMany(
         mappedBy = "post",

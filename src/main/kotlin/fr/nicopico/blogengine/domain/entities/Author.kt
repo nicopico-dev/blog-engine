@@ -5,8 +5,11 @@ import javax.persistence.*
 @Entity
 class Author(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     val id: Long? = null,
+    @Column(name = "name")
     val name: String? = null,
+    @Column(name = "email")
     val email: Email,
 )

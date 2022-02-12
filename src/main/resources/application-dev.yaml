@@ -11,6 +11,11 @@ spring:
     username: root
     password: password
   jpa:
-    generate-ddl: true
+    generate-ddl: false
+  h2:
+    console:
+      enabled: true
+  liquibase:
+    contexts: dev
 
 my.typesafe.properties.text: ${MY_TEXT} # Use MY_TEXT environment variable
