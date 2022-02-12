@@ -44,11 +44,16 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    liquibaseRuntime("org.liquibase:liquibase-core")
-    liquibaseRuntime("mysql:mysql-connector-java")
+    // We should specify all version explicitly for Liquibase
+    // They don't have to be the same as the project dependencies
+    liquibaseRuntime("org.liquibase:liquibase-core:4.5.0")
+    liquibaseRuntime("mysql:mysql-connector-java:8.0.28")
     liquibaseRuntime("info.picocli:picocli:4.6.1")
-    liquibaseRuntime("org.liquibase.ext:liquibase-hibernate5:3.6")
     liquibaseRuntime("org.yaml:snakeyaml:1.17")
+    // liquibase-hibernate5 version must be the same as liquibase-core
+    liquibaseRuntime("org.liquibase.ext:liquibase-hibernate5:4.5.0")
+    liquibaseRuntime("org.springframework:spring-beans:5.3.15")
+    liquibaseRuntime("org.springframework.data:spring-data-jpa:2.6.1")
     liquibaseRuntime(sourceSets.main.map {it.output})
 }
 
@@ -56,12 +61,13 @@ liquibase {
     activities {
         create("main") {
             arguments = mapOf(
-                "logLevel" to "info",
+                "logLevel" to "debug",
                 "changeLogFile" to "src/main/resources/liquibase/master.yml",
                 "url" to "jdbc:mysql://localhost:3307/blog",
                 "username" to "root",
                 "password" to "password",
-                "referenceUrl" to "hibernate:spring:fr.nicopico.blogengine.domain.entities?dialect=org.hibernate.dialect.MySQL5InnoDBDialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy",
+                "referenceUrl" to "hibernate:spring:fr.nicopico.blogengine.domain.entities" +
+                        "?dialect=org.hibernate.dialect.MySQLDialect",
                 "referenceDriver" to "liquibase.ext.hibernate.database.connection.HibernateDriver",
             )
         }
