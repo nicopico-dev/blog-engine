@@ -62,15 +62,18 @@ dependencies {
     liquibaseRuntime(sourceSets.main.map {it.output})
 }
 
+// Retrieve environment variables
+val dotEnv = project.getDotenv()
+
 liquibase {
     activities {
         register("main") {
             arguments = mapOf(
                 "logLevel" to "info",
                 "changeLogFile" to "src/main/resources/liquibase/master.yml",
-                "url" to "jdbc:mysql://localhost:3307/blog",
-                "username" to "root",
-                "password" to "password",
+                "url" to dotEnv["DATABASE_URL"],
+                "username" to dotEnv["DATABASE_USERNAME"],
+                "password" to dotEnv["DATABASE_PASSWORD"],
             )
         }
         register("diffMain") {
@@ -80,9 +83,9 @@ liquibase {
             arguments = mapOf(
                 "logLevel" to "info",
                 "changeLogFile" to "src/main/resources/liquibase/changelog/${df.format(startTime)}-diff.yml",
-                "url" to "jdbc:mysql://localhost:3307/blog",
-                "username" to "root",
-                "password" to "password",
+                "url" to dotEnv["DATABASE_URL"],
+                "username" to dotEnv["DATABASE_USERNAME"],
+                "password" to dotEnv["DATABASE_PASSWORD"],
                 "referenceUrl" to "hibernate:spring:fr.nicopico.blogengine.domain.entities" +
                         "?dialect=org.hibernate.dialect.MySQLDialect" +
                         "&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy" +
@@ -90,9 +93,12 @@ liquibase {
                 "referenceDriver" to "liquibase.ext.hibernate.database.connection.HibernateDriver",
             )
         }
-        // Running diff commands must set the activity to diffMain
-        // like `./gradlew diffChangeLog -PrunList=diffMain`
-        runList = project.ext.get("runList") ?: "main"
+    }
+    // Running diff commands must set the activity to diffMain
+    // like `./gradlew diffChangeLog -PrunList=diffMain`
+    this.runList = project.ext.let {
+        if (it.has("runList")) it["runList"]
+        else "main"
     }
 }
 
