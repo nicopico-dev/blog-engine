@@ -30,3 +30,8 @@ These additional references should also help you:
 * [Liquibase commands](https://docs.liquibase.com/commands/home.html)
 * [Working with Changelogs](https://docs.liquibase.com/concepts/changelogs/working-with-changelogs.html)
 * [Trimming Liquibase Changelogs](https://www.liquibase.com/blog/trimming-liquibase-changelogs)
+
+### Spring Doc (Swagger UI)
+
+* [Getting started](https://springdoc.org/#getting-started)
+* [Documenting a Spring REST API Using OpenAPI 3.0](https://www.baeldung.com/spring-rest-openapi-documentation)
