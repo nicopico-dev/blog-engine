@@ -1,8 +1,7 @@
 package fr.nicopico.blogengine.domain.request.blog.post.delete
 
 import fr.nicopico.blogengine.domain.repository.PostRepository
-import fr.nicopico.blogengine.domain.request.RequestHandler
-import fr.nicopico.blogengine.infra.logInfo
+import fr.nicopico.blogengine.domain.request.CommandHandler
 import org.springframework.stereotype.Component
 import javax.transaction.Transactional
 
@@ -10,7 +9,7 @@ import javax.transaction.Transactional
 @Transactional
 class DeletePostRequestHandler(
     private val postRepository: PostRepository
-) : RequestHandler<DeletePostRequest, Unit> {
+) : CommandHandler<DeletePostRequest> {
     override fun handle(request: DeletePostRequest) {
         postRepository.deleteById(request.postId)
     }
