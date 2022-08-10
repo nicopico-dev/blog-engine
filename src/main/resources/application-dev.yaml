@@ -4,7 +4,7 @@ logging:
     org.springframework.web: debug
     org.hibernate: warn
     web: debug
-    liquibase: debug
+    liquibase: info
 
 spring:
   jpa:

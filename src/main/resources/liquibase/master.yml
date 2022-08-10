@@ -1,18 +1,14 @@
 databaseChangeLog:
   - property:
-      name: IDENTITY
-      value: IDENTITY
-      dbms: h2
-  - property:
-      name: IDENTITY
+      name: type.IDENTITY
       value: BIGINT
-      dbms: mysql
+      dbms: h2, mysql
   - property:
-      name: NOW
+      name: function.NOW
       value: now()
       dbms: h2, mysql
   - property:
-      name: UUID
+      name: type.UUID
       value: varchar(36)
       dbms: h2, mysql
 
@@ -28,7 +24,7 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
                   name: id
-                  type: ${IDENTITY}
+                  type: ${type.IDENTITY}
                   autoIncrement: true
               - column:
                   name: email
@@ -48,7 +44,7 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
                   name: id
-                  type: ${IDENTITY}
+                  type: ${type.IDENTITY}
                   autoIncrement: true
               - column:
                   name: creation_date
@@ -77,7 +73,7 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
                   name: id
-                  type: ${IDENTITY}
+                  type: ${type.IDENTITY}
                   autoIncrement: true
               - column:
                   name: content
