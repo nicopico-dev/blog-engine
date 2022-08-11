@@ -1,8 +1,8 @@
 import org.gradle.initialization.BuildRequestMetaData
 import org.gradle.kotlin.dsl.support.serviceOf
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.util.Date
 import java.text.SimpleDateFormat
+import java.util.*
 
 plugins {
     val kotlinVersion = "1.7.10"
@@ -48,7 +48,12 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-kotlin:1.6.9")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        // We want to use MockK instead of Mockito
+        exclude(group = "org.mockito")
+    }
+    testImplementation("io.mockk:mockk:1.12.5")
 
     // We should specify all version explicitly for Liquibase
     // They don't have to be the same as the project dependencies
