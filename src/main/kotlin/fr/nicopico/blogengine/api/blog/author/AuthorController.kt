@@ -9,7 +9,9 @@ import fr.nicopico.blogengine.domain.request.Dispatcher
 import fr.nicopico.blogengine.domain.request.blog.author.AuthorQueries
 import fr.nicopico.blogengine.domain.request.blog.author.create.CreateAuthorRequestHandler
 import io.swagger.v3.oas.annotations.Operation
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/blog/authors")
@@ -32,7 +34,7 @@ class AuthorController(
 
     @PostMapping
     @Operation(summary = "Create a new author")
-    fun createAuthor(@RequestBody request: CreateAuthorRequestDTO): AuthorDTO =
+    fun createAuthor(@Valid @RequestBody request: CreateAuthorRequestDTO): AuthorDTO =
         dispatcher.dispatch(CreateAuthorRequestHandler::class, request.toRequest())
             .toDTO()
 }

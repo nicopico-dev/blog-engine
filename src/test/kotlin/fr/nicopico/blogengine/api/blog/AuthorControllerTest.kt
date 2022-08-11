@@ -10,10 +10,7 @@ import fr.nicopico.blogengine.domain.request.blog.author.create.CreateAuthorRequ
 import fr.nicopico.blogengine.test.*
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.list
-import io.mockk.clearAllMocks
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.slot
+import io.mockk.*
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.AfterEach
@@ -149,5 +146,18 @@ internal class AuthorControllerTest {
                 )
             }
         }
+    }
+
+    @Test
+    fun `POST should fail if the email is not provided`() {
+        mvc.perform(
+            post("/blog/authors")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""{"name": "TEST"}""")
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect(content().string(containsString("Email is mandatory")))
+
+        verify { dispatcher wasNot Called }
     }
 }
