@@ -54,6 +54,7 @@ dependencies {
         exclude(group = "org.mockito")
     }
     testImplementation("io.mockk:mockk:1.12.5")
+    testImplementation("io.kotest:kotest-property:5.4.1")
 
     // We should specify all version explicitly for Liquibase
     // They don't have to be the same as the project dependencies
