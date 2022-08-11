@@ -4,11 +4,14 @@ import fr.nicopico.blogengine.domain.entities.Author
 import fr.nicopico.blogengine.domain.entities.Email
 import fr.nicopico.blogengine.domain.request.Dispatcher
 import fr.nicopico.blogengine.domain.request.blog.author.AuthorQueries
+import fr.nicopico.blogengine.domain.request.blog.author.create.CreateAuthorRequest
 import fr.nicopico.blogengine.domain.request.blog.author.create.CreateAuthorRequestHandler
 import io.mockk.*
+import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -18,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-
 
 @WebMvcTest(AuthorController::class)
 internal class AuthorControllerTest {
@@ -61,9 +63,7 @@ internal class AuthorControllerTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath<List<*>>("$", hasSize(3)))
             .andExpect(jsonPath("$[0].name", `is`("JK Rowling")))
-            .andExpect(jsonPath("$[2].name", `is`("Unknown")))
-
-        verify { dispatcher wasNot Called}
+            .andExpect(jsonPath("$[2].name", `is`(emptyOrNullString())))
     }
 
     @Test
@@ -72,21 +72,20 @@ internal class AuthorControllerTest {
 
         mvc.perform(get("/blog/authors"))
             .andExpect(status().is5xxServerError)
-
-        verify { dispatcher wasNot Called}
     }
 
     @Test
     fun `GET by id should provide the corresponding author`() {
-        val author = Author(id = 1, name = "JK Rowling", email = Email("jk.row@gmail.com"))
-        every { queries.getById(1) } returns author
+        val authorIdSlot = slot<Long>()
+        val author = Author(id = 42, name = "JK Rowling", email = Email("jk.row@gmail.com"))
+        every { queries.getById(capture(authorIdSlot)) } returns author
 
-        mvc.perform(get("/blog/authors/1"))
+        mvc.perform(get("/blog/authors/42"))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.name", `is`("JK Rowling")))
 
-        verify { dispatcher wasNot Called}
+        assertThat(authorIdSlot.captured).isEqualTo(42)
     }
 
     @Test
@@ -95,24 +94,13 @@ internal class AuthorControllerTest {
 
         mvc.perform(get("/blog/authors/1"))
             .andExpect(status().isNotFound)
-
-        verify { dispatcher wasNot Called}
     }
 
     @Test
-    fun `GET by id should return a 500 server error when an exception occurs`() {
-        every { queries.getById(any()) } throws RuntimeException("ERROR!")
-
-        mvc.perform(get("/blog/authors/312"))
-            .andExpect(status().is5xxServerError)
-
-        verify { dispatcher wasNot Called}
-    }
-
-    @Test
-    fun `POST should create a new author`() {
+    fun `POST should create a new named author`() {
         val createdAuthor = Author(id = 46, name = "authorName", email = Email("author@mail"))
-        every { dispatcher.dispatch(CreateAuthorRequestHandler::class, any()) } returns createdAuthor
+        val requestSlot = slot<CreateAuthorRequest>()
+        every { dispatcher.dispatch(CreateAuthorRequestHandler::class, capture(requestSlot)) } returns createdAuthor
 
         mvc.perform(
             post("/blog/authors")
@@ -124,12 +112,53 @@ internal class AuthorControllerTest {
             .andExpect(jsonPath("$.name", equalTo(createdAuthor.name)))
             .andExpect(jsonPath("$.email", equalTo(createdAuthor.email.address)))
 
-        // TODO Check the request
-
-        verify { queries wasNot Called }
+        requestSlot.captured.also { request ->
+            assertAll("request",
+                { assertThat(request.name).isEqualTo("G.R.R. Martin") },
+                { assertThat(request.email.address).isEqualTo("grr@martin.co") }
+            )
+        }
     }
 
-    // TODO Create un-named author
-    // TODO Prevent creating duplicate authors
-    // TODO 500 mapping
+    @Test
+    fun `POST should create a new anonymous author`() {
+        val createdAuthor = Author(id = 12, name = null, email = Email("author@mail"))
+        val requestSlot = slot<CreateAuthorRequest>()
+        every { dispatcher.dispatch(CreateAuthorRequestHandler::class, capture(requestSlot)) } returns createdAuthor
+
+        mvc.perform(
+            post("/blog/authors")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""{"email": "grr@martin.co"}""")
+        )
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.id", equalTo(createdAuthor.id), Long::class.java))
+            .andExpect(jsonPath("$.name", `is`(emptyOrNullString())))
+            .andExpect(jsonPath("$.email", equalTo(createdAuthor.email.address)))
+
+        requestSlot.captured.also { request ->
+            assertAll("request",
+                { assertThat(request.name).isNull() },
+                { assertThat(request.email.address).isEqualTo("grr@martin.co") }
+            )
+        }
+    }
+
+    @Test
+    fun `POST should fail if the email is not provided`() {
+        mvc.perform(
+            post("/blog/authors")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""{"name": "Stephen King"}""")
+        )
+            .andExpect(status().isBadRequest)
+            .andExpect(content().string(containsString("email is mandatory")))
+
+        verify { dispatcher wasNot Called }
+    }
+
+    @Test
+    fun `POST should fail if the email is already known`() {
+        TODO()
+    }
 }
