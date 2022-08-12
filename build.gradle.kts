@@ -14,6 +14,7 @@ plugins {
     kotlin("plugin.jpa") version kotlinVersion
 
     id("org.liquibase.gradle") version "2.1.1"
+    id("org.jetbrains.kotlinx.kover") version "0.6.0-Beta"
 }
 
 group = "fr.nicopico"
