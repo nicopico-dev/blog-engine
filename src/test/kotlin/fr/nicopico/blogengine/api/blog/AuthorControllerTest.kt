@@ -9,7 +9,10 @@ import fr.nicopico.blogengine.domain.request.blog.author.create.CreateAuthorRequ
 import fr.nicopico.blogengine.test.*
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.list
-import io.mockk.*
+import io.mockk.clearAllMocks
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.jupiter.api.AfterEach
@@ -76,36 +79,20 @@ internal class AuthorControllerTest {
     }
 
     @Test
-    fun `GET should return a 500 server error when an exception occurs`() {
-        every { queries.findAll() } throws RuntimeException("ERROR!")
-
-        mvc.perform(get("/blog/authors"))
-            .andExpect(status().is5xxServerError)
-    }
-
-    @Test
     fun `GET by id should provide the corresponding author`() {
-        checkAllBlocking(anyAuthor()) { author ->
+        checkAllBlocking(anyId(), anyAuthor()) { authorId, author ->
             val authorIdSlot = slot<Long>()
             every { queries.getById(capture(authorIdSlot)) } returns author
 
-            mvc.perform(get("/blog/authors/42"))
+            mvc.perform(get("/blog/authors/{id}", authorId))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", equalTo(author.id), Long::class.java))
                 .andExpect(jsonPath("$.name", equalTo(author.name)))
                 .andExpect(jsonPath("$.email", equalTo(author.email.address)))
 
-            assertThat(authorIdSlot.captured).isEqualTo(42)
+            assertThat(authorIdSlot.captured).isEqualTo(authorId)
         }
-    }
-
-    @Test
-    fun `GET by id should return a 404 error when the author id is not found`() {
-        every { queries.getById(any()) } throws NoSuchElementException("Author not found")
-
-        mvc.perform(get("/blog/authors/1"))
-            .andExpect(status().isNotFound)
     }
 
     @Test
@@ -161,25 +148,5 @@ internal class AuthorControllerTest {
                 )
             }
         }
-    }
-
-    @Test
-    fun `POST should fail if the email is not provided`() {
-        checkAllBlocking(anyName()) {authorName ->
-            mvc.perform(
-                post("/blog/authors")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("""{"name": "$authorName"}""")
-            )
-                .andExpect(status().isBadRequest)
-                .andExpect(content().string(containsString("email is mandatory")))
-
-            verify { dispatcher wasNot Called }
-        }
-    }
-
-    @Test
-    fun `POST should fail if the email is already known`() {
-        TODO()
     }
 }
