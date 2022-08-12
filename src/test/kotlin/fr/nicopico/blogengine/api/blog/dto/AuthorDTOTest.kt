@@ -1,5 +1,6 @@
 package fr.nicopico.blogengine.api.blog.dto
 
+import fr.nicopico.blogengine.api.blog.author.dto.AuthorDTO
 import fr.nicopico.blogengine.domain.entities.Email
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertAll

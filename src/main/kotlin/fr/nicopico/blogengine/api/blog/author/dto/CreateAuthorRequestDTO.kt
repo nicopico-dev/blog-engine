@@ -1,4 +1,4 @@
-package fr.nicopico.blogengine.api.blog.request
+package fr.nicopico.blogengine.api.blog.author.dto
 
 import fr.nicopico.blogengine.domain.request.blog.author.create.CreateAuthorRequest
 

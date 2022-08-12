@@ -1,9 +1,9 @@
-package fr.nicopico.blogengine.api.blog
+package fr.nicopico.blogengine.api.blog.author
 
-import fr.nicopico.blogengine.api.blog.dto.AuthorDTO
-import fr.nicopico.blogengine.api.blog.dto.toDTO
-import fr.nicopico.blogengine.api.blog.request.CreateAuthorRequestDTO
-import fr.nicopico.blogengine.api.blog.request.toRequest
+import fr.nicopico.blogengine.api.blog.author.dto.AuthorDTO
+import fr.nicopico.blogengine.api.blog.author.dto.CreateAuthorRequestDTO
+import fr.nicopico.blogengine.api.blog.author.dto.toDTO
+import fr.nicopico.blogengine.api.blog.author.dto.toRequest
 import fr.nicopico.blogengine.domain.entities.Author
 import fr.nicopico.blogengine.domain.request.Dispatcher
 import fr.nicopico.blogengine.domain.request.blog.author.AuthorQueries

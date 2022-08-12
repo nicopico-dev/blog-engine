@@ -1,5 +1,6 @@
 package fr.nicopico.blogengine.api.blog
 
+import fr.nicopico.blogengine.api.blog.author.AuthorController
 import fr.nicopico.blogengine.domain.entities.Author
 import fr.nicopico.blogengine.domain.entities.Email
 import fr.nicopico.blogengine.domain.request.Dispatcher

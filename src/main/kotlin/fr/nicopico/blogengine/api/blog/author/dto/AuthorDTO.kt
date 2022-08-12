@@ -1,4 +1,4 @@
-package fr.nicopico.blogengine.api.blog.dto
+package fr.nicopico.blogengine.api.blog.author.dto
 
 import fr.nicopico.blogengine.domain.entities.Author
 import fr.nicopico.blogengine.domain.entities.Email

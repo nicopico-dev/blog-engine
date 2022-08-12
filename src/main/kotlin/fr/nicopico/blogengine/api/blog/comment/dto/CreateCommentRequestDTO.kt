@@ -1,4 +1,4 @@
-package fr.nicopico.blogengine.api.blog.request
+package fr.nicopico.blogengine.api.blog.comment.dto
 
 import fr.nicopico.blogengine.domain.entities.Email
 import fr.nicopico.blogengine.domain.request.blog.comment.create.CreateCommentRequest
